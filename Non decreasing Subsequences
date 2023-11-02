@@ -1,0 +1,29 @@
+Input: nums = [4,6,7,7]
+Output: [[4,6],[4,6,7],[4,6,7,7],[4,7],[4,7,7],[6,7],[6,7,7],[7,7]]
+
+CODE:
+class Solution {
+public:
+    int n;
+    void solve(vector<int>& nums,int i,vector<int>& curr,vector<vector<int>>& ans){
+        if(curr.size()>1){
+            ans.push_back(curr);
+        }
+        unordered_set<int>st;
+        for(int j=i;j<n;j++){
+            if((curr.empty() || nums[j]>=curr.back()) && st.find(nums[j])==st.end()){
+                curr.push_back(nums[j]);
+                solve(nums,j+1,curr,ans);
+                curr.pop_back();
+                st.insert(nums[j]);
+            }
+        }
+    }
+    vector<vector<int>> findSubsequences(vector<int>& nums) {
+        n=nums.size();
+        vector<vector<int>>ans;
+        vector<int>curr;
+        solve(nums,0,curr,ans);
+        return ans;
+    }
+};
