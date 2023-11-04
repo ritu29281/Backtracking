@@ -1,0 +1,34 @@
+Input: cookies = [8,15,10,20,8], k = 2
+Output: 31
+Explanation: One optimal distribution is [8,15,8] and [10,20]
+- The 1st child receives [8,15,8] which has a total of 8 + 15 + 8 = 31 cookies.
+- The 2nd child receives [10,20] which has a total of 10 + 20 = 30 cookies.
+The unfairness of the distribution is max(31,30) = 31.
+It can be shown that there is no distribution with an unfairness less than 31.
+
+CODE:
+
+class Solution {
+public:
+    int result=INT_MAX;
+    int n;
+    void solve(int idx,vector<int>&cookies,vector<int>&childrens,int k){
+        if(idx==n){
+            int maxi=*max_element(childrens.begin(),childrens.end());
+            result=min(result,maxi);
+            return;
+        }
+        int cookie= cookies[idx];
+        for(int i=0;i<k;i++){
+            childrens[i]=childrens[i]+cookie;
+            solve(idx+1,cookies,childrens,k);
+            childrens[i]=childrens[i]-cookie;
+        }
+    }
+    int distributeCookies(vector<int>& cookies, int k) {
+      n=cookies.size();
+      vector<int>childrens(k);
+        solve(0,cookies,childrens,k);
+        return result;
+    }
+};
