@@ -1,0 +1,48 @@
+Input: n = 5, requests = [[0,1],[1,0],[0,1],[1,2],[2,0],[3,4]]
+Output: 5
+Explantion: Let's see the requests:
+From building 0 we have employees x and y and both want to move to building 1.
+From building 1 we have employees a and b and they want to move to buildings 2 and 0 respectively.
+From building 2 we have employee z and they want to move to building 0.
+From building 3 we have employee c and they want to move to building 4.
+From building 4 we don't have any requests.
+We can achieve the requests of users x and b by swapping their places.
+We can achieve the requests of users y, a and z by swapping the places in the 3 buildings.
+
+CODE:
+class Solution {
+public:
+    int m;
+    
+    int ans=INT_MIN;
+    void solve(int idx,int count,int n,vector<int>&result,vector<vector<int>>& requests){
+        if(idx>=m){
+            bool zero=true;
+            for(int &x:result){
+                if(x!=0){
+                    zero=false;
+                    break;
+                }
+            }
+            if(zero){
+                ans=max(ans,count);
+            }
+            return;
+        }
+        int from=requests[idx][0];
+        int to =requests[idx][1];
+        result[from]--;
+        result[to]++;
+        solve(idx+1,count+1,n,result,requests);
+         result[from]++;
+        result[to]--;
+        solve(idx+1,count,n,result,requests);
+    }
+    int maximumRequests(int n, vector<vector<int>>& requests) {
+        
+        m=requests.size();
+       vector<int>result(n,0);
+        solve(0,0,n,result,requests);
+        return ans;
+    }
+};
