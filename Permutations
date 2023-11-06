@@ -1,0 +1,73 @@
+Leetcode:
+
+Input: nums = [1,2,3]
+Output: [[1,2,3],[1,3,2],[2,1,3],[2,3,1],[3,1,2],[3,2,1]]
+
+class Solution {
+public:
+    vector<vector<int>>ans;
+    unordered_set<int>st;
+    void solve(vector<int>&nums,vector<int>&curr){
+        if(curr.size()>=nums.size()){
+            ans.push_back(curr);
+            return;
+        }
+        for(int i=0;i<nums.size();i++){
+            if(st.find(nums[i])==st.end()){
+                curr.push_back(nums[i]);
+                st.insert(nums[i]);
+                solve(nums,curr);
+                curr.pop_back();
+                st.erase(nums[i]);
+            }
+        }
+    }
+    vector<vector<int>> permute(vector<int>& nums) {
+        vector<int>curr;
+       solve(nums,curr); 
+        return ans;
+    }
+};
+
+GFG:
+
+Input: 
+n = 3
+arr[] = {1, 2, 1}
+Output: 
+1 1 2
+1 2 1
+2 1 1
+Explanation:
+These are the only possible unique permutations
+for the given array.
+
+class Solution {
+  public:     
+ void permut(vector<int>&ds,vector<int>arr,set<vector<int>>&res,int freq[]){
+      if(ds.size()==arr.size()){
+          res.insert(ds);
+          return;
+      }
+      for(int i=0;i<arr.size();i++){
+          if(!freq[i]){
+              ds.push_back(arr[i]);
+              freq[i]=1;
+              permut(ds,arr,res,freq);
+              freq[i]=0;
+              ds.pop_back();
+          }
+      }
+  }
+    vector<vector<int>> uniquePerms(vector<int> arr ,int n) {
+         vector<int>ds;
+         int freq[n]={0};
+         set<vector<int>>res;
+         for(int i=0;i<n;i++)freq[i]=0;
+         permut(ds,arr,res,freq);
+         
+         vector<vector<int>>ans(res.begin(),res.end());
+         
+         return ans;
+    }    
+};
