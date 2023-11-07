@@ -1,0 +1,44 @@
+Input:
+N = 4
+arr[] = {7,2,6,5}
+B = 16
+Output:
+(2 2 2 2 2 2 2 2)
+(2 2 2 2 2 6)
+(2 2 2 5 5)
+(2 2 5 7)
+(2 2 6 6)
+(2 7 7)
+(5 5 6)
+
+CODE:
+
+ void solve(int idx, int target, vector<int> &arr, vector<vector<int>> &ans, vector<int> &ds)
+    {
+        if(idx == arr.size()){
+            if(target==0){
+                
+                ans.push_back(ds);
+                return;
+            }
+            return;
+        }
+        
+        if(arr[idx]<=target)
+        {
+            ds.push_back(arr[idx]);
+            solve(idx,target-arr[idx],arr,ans,ds);
+            ds.pop_back();
+        }
+        solve(idx+1,target,arr,ans,ds);
+    }
+    vector<vector<int> > combinationSum(vector<int> &A, int B) {
+       set<int> st(A.begin(),A.end());
+        vector<int> Arr(st.begin(),st.end());
+        
+        vector<vector<int>> ans;
+        vector<int>ds;
+        sort(Arr.begin(),Arr.end());
+        solve(0,B,Arr,ans,ds);
+        return ans;
+    }
